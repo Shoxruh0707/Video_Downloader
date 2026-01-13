@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+.venv/
+venv/
+
+# Env files
+.env
+
+# Sessions and downloads
+*.session
+downloads/
+
+# VSCode
+.vscode/
+
+# Local clone folder
+Video_Downloader/
