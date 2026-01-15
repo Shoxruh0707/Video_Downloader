@@ -11,6 +11,7 @@ from pathlib import Path
 import instagram_downloader
 import social_downloader
 from dotenv import load_dotenv
+from user_tracker import UserTracker
 
 # Configure logging
 logging.basicConfig(
@@ -32,6 +33,9 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+# Initialize user tracker
+user_tracker = UserTracker()
+
 # Define states for FSM
 class DownloadStates(StatesGroup):
     waiting_for_url = State()
@@ -39,7 +43,18 @@ class DownloadStates(StatesGroup):
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext) -> None:
-    """Handle /start command"""
+    """Handle /start command - track user and update bot description"""
+    user_id = message.from_user.id
+    first_name = message.from_user.first_name
+    username = message.from_user.username
+    
+    # Track the user
+    is_new_user = user_tracker.add_user(user_id, first_name, username)
+    
+    # Update bot description if it's a new user
+    if is_new_user:
+        await user_tracker.update_bot_description(bot)
+    
     await message.answer(
         "👋 Welcome to Video Downloader Bot!\n\n"
         "Just send me a video link and I'll download it for you!\n\n"
@@ -320,6 +335,18 @@ async def echo_message(message: Message) -> None:
         "• Vimeo\n"
         "• Pinterest\n"
         "• Reddit"
+    )
+
+@dp.message(Command("stats"))
+async def cmd_stats(message: Message) -> None:
+    """Show user statistics"""
+    stats = user_tracker.get_user_stats()
+    
+    await message.answer(
+        f"📊 Bot Statistics:\n\n"
+        f"👥 Total Users: {stats['total_users']}\n"
+        f"📅 Users Today: {stats['users_today']}\n"
+        f"📆 First User: {stats['first_user_date']}"
     )
 
 async def main() -> None:
