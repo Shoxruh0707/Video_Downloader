@@ -42,7 +42,7 @@ async def cmd_start(message: Message, state: FSMContext) -> None:
     """Handle /start command"""
     await message.answer(
         "👋 Welcome to Video Downloader Bot!\n\n"
-        "Send me a video link and I'll download it for you.\n\n"
+        "Just send me a video link and I'll download it for you!\n\n"
         "📱 Supported platforms:\n"
         "• YouTube\n"
         "• Instagram\n"
@@ -56,9 +56,8 @@ async def cmd_start(message: Message, state: FSMContext) -> None:
         "For other platforms: Auto downloads best quality\n\n"
         "Just paste the link!"
     )
-    await state.set_state(DownloadStates.waiting_for_url)
 
-@dp.message(DownloadStates.waiting_for_url)
+@dp.message(F.text.contains("http"))
 async def handle_link(message: Message, state: FSMContext) -> None:
     """Handle video link from multiple platforms"""
     url = message.text.strip()
@@ -235,9 +234,10 @@ async def download_video(url: str, quality: str, user_id: int) -> str:
     """Download video with specified quality"""
     
     quality_map = {
-        "480": "best[height<=480]/best",
-        "720": "best[height<=720]/best",
-        "1080": "best[height<=1080]/best"
+        "480": "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]",
+        "720": "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]",
+        "1080": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]",
+}
     }
     
     format_str = quality_map.get(quality, "best[ext=mp4]/best")
@@ -251,6 +251,8 @@ async def download_video(url: str, quality: str, user_id: int) -> str:
         'nocheckcertificate': True,
         'no_color': True,
         'noplaylist': True,
+        'retries': 10,
+        'fragment_retries': 10,
     }
 
     def _do_download() -> str:
@@ -307,10 +309,18 @@ async def get_video_title(url: str) -> str:
 
 @dp.message()
 async def echo_message(message: Message) -> None:
-    """Handle any other message - suggest /start"""
+    """Handle any other message"""
     await message.answer(
-        "👋 Send /start to begin downloading videos!\n\n"
-        "Supported: YouTube, Instagram, TikTok, Twitter/X, Facebook, Vimeo, Pinterest, Reddit"
+        "👋 Just send me a video link and I'll download it!\n\n"
+        "📱 Supported platforms:\n"
+        "• YouTube\n"
+        "• Instagram\n"
+        "• TikTok\n"
+        "• Twitter/X\n"
+        "• Facebook\n"
+        "• Vimeo\n"
+        "• Pinterest\n"
+        "• Reddit"
     )
 
 async def main() -> None:
