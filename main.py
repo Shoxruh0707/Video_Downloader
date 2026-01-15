@@ -237,7 +237,6 @@ async def download_video(url: str, quality: str, user_id: int) -> str:
         "480": "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]",
         "720": "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]",
         "1080": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]",
-}
     }
     
     format_str = quality_map.get(quality, "best[ext=mp4]/best")
