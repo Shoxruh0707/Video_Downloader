@@ -56,20 +56,65 @@ async def cmd_start(message: Message, state: FSMContext) -> None:
         await user_tracker.update_bot_description(bot)
     
     await message.answer(
-        "👋 Welcome to Video Downloader Bot!\n\n"
-        "Just send me a video link and I'll download it for you!\n\n"
-        "📱 Supported platforms:\n"
-        "• YouTube\n"
-        "• Instagram\n"
-        "• TikTok\n"
-        "• Twitter/X\n"
-        "• Facebook\n"
-        "• Vimeo\n"
-        "• Pinterest\n"
-        "• Reddit\n\n"
-        "For YouTube: Choose quality (480p, 720p, 1080p, MP3)\n"
-        "For other platforms: Auto downloads best quality\n\n"
-        "Just paste the link!"
+        '''
+        👋 Video Downloader Botga xush kelibsiz!
+
+        Faqat video linkini yuboring va men siz uchun yuklab beraman!
+
+        📱 Qo‘llab-quvvatlanadigan platformalar:
+        • YouTube
+        • Instagram
+        • TikTok
+        • Twitter/X
+        • Facebook
+        • Vimeo
+        • Pinterest
+        • Reddit    
+        YouTube uchun: sifatni tanlang (480p, 720p, 1080p, MP3)
+        Boshqa platformalar uchun: eng yaxshi sifat avtomatik yuklab olinadi
+
+        Faqat linkni yuboring!
+
+        ---
+
+        👋 Добро пожаловать в Video Downloader Bot!
+
+        Просто пришлите ссылку на видео, и я скачаю его для вас!
+
+        📱 Поддерживаемые платформы:
+        •  YouTube
+        • Instagram
+        • TikTok
+        • Twitter/X
+        • Facebook
+        • Vimeo
+        • Pinterest
+        • Reddit
+        Для YouTube: выберите качество (480p, 720p, 1080p, MP3)
+        Для других платформ: загружается лучшее качество автоматически
+
+        Просто вставьте ссылку!
+        ---
+
+        👋 Welcome to Video Downloader Bot!
+
+        Just send me a video link and I'll download it for you!
+
+        📱 Supported platforms:
+        • YouTube
+        • Instagram
+        • TikTok
+        • Twitter/X
+        • Facebook
+        • Vimeo
+        • Pinterest
+        • Reddit
+
+        For YouTube: Choose quality (480p, 720p, 1080p, MP3)
+        For other platforms: Auto downloads best quality
+
+        Just paste the link!
+        '''
     )
 
 @dp.message(F.text.contains("http"))
